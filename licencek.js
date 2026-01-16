@@ -48,21 +48,31 @@ const licenseInput = function () {
                 const license = new License(type, meaning, Date());
                 saveLicense(license.toCSVFormat());
                 console.log(license.toString())
-                readline.close();
             } catch (err) {
-                console.log(`Hibás adatok: ${err}\nPróbáld újra.`)
+                console.log(`Hiba történt: ${err}\nPróbáld újra.`)
                 licenseInput();
             };
-
+            readline.close();
         });
     });
 };
 
 const saveLicense = function (license) {
     try {
-        const fs = require('fs')
+        const fs = require('fs');
         fs.appendFileSync('licenc.csv', license);
-        console.log(fs.readFileSync('licenc.csv').toString());
+
+        const chalk = require('chalk').default;
+        const licencCSV = fs.readFileSync('licenc.csv').toString();
+        const lines = licencCSV.split('\n');
+        console.log(lines[0])
+        for (let i = 1; i < lines.length; i++) {
+            if (i % 2) {
+                console.log(chalk.red(lines[i]))
+            } else {
+                console.log(chalk.green(lines[i]))
+            };
+        };
     } catch (err) {
         throw new Error(err);
     };
