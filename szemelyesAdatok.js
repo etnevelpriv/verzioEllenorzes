@@ -31,8 +31,8 @@ const readline = require('readline').createInterface({
 const userInputs = function () {
     readline.question('Hogy hívnak?', name => {
         readline.question('Hány éves vagy?', age => {
-            console.log(name, age);
             const user = new Felhasznalo(name, Number(age));
+            console.log(user.toString());
             saveUser(user);
             readline.close();
         });
