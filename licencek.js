@@ -14,21 +14,25 @@
 //     a páros sorszámú sorok piros színnel jelenjenek meg.
 
 class License {
-    constructor(type, meaning) {
+    constructor(type, meaning, date) {
         if (typeof type != 'string' || type === null || type === '' || type === undefined) {
             throw new Error(`Nem megfelelően van megadva a típus. : ${type}`);
         };
         if (typeof meaning != 'string' || meaning === null || meaning === undefined || meaning === '') {
             throw new Error(`Nem megfelelően van megadva a jelentés. : ${meaning}`);
         };
+        if (date === null || date === undefined || date > Date()) {
+            throw new Error(`Nem megfelelően van megadva a dátum. : ${date}`);
+        };
         this.type = type;
         this.meaning = meaning;
+        this.date = date;
     };
     toString() {
-        return (`A licensz típusa: ${this.type}. A licensz jelentése: ${this.meaning}`)
+        return (`A licensz típusa: ${this.type}. A licensz jelentése: ${this.meaning}. Készítés dátuma: ${this.date}`)
     };
     toCSVFormat() {
-        return (`\n${this.type};${this.meaning}`)
+        return (`\n${this.type};${this.meaning};${this.date}`)
     };
 };
 
@@ -40,10 +44,16 @@ const readline = require('readline').createInterface({
 const licenseInput = function () {
     readline.question('Mi a licensz típusa?', type => {
         readline.question('Mi a licensz jelentése?', meaning => {
-            console.log(type, meaning);
-            const license = new License(type, meaning).toCSVFormat();
-            saveLicense(license);
-            readline.close();
+            try {
+                const license = new License(type, meaning, Date());
+                saveLicense(license.toCSVFormat());
+                console.log(license.toString())
+                readline.close();
+            } catch (err) {
+                console.log(`Hibás adatok: ${err}\nPróbáld újra.`)
+                licenseInput();
+            };
+
         });
     });
 };
