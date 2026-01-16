@@ -62,6 +62,7 @@ const saveLicense = function (license) {
     try {
         const fs = require('fs')
         fs.appendFileSync('licenc.csv', license);
+        console.log(fs.readFileSync('licenc.csv').toString());
     } catch (err) {
         throw new Error(err);
     };
