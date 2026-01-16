@@ -28,16 +28,27 @@ const readline = require('readline').createInterface({
     output: process.stdout
 });
 
-readline.question('Hogy hívnak?', name => {
-    readline.question('Hány éves vagy?', age => {
-        console.log(name, age);
-        const user = new Felhasznalo(name, Number(age))
-        try {
-            require('fs').readFileSync('data.json', JSON.stringify(user));
-        } catch (err) {
-            throw new Error(err)
-        }
-        readline.close();
+const userInputs = function () {
+    readline.question('Hogy hívnak?', name => {
+        readline.question('Hány éves vagy?', age => {
+            console.log(name, age);
+            const user = new Felhasznalo(name, Number(age));
+            saveUser(user);
+            readline.close();
+        });
     });
-});
+};
 
+const saveUser = function (user) {
+    try {
+        const fs = require('fs')
+        const jsonFile = JSON.parse(fs.readFileSync('data.json').toString());
+        jsonFile.users.push(user);
+        fs.writeFileSync('data.json', JSON.stringify(jsonFile));
+        console.log(fs.readFileSync('data.json').toString());
+    } catch (err) {
+        throw new Error(err);
+    };
+};
+
+userInputs();
