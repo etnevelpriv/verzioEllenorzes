@@ -32,10 +32,16 @@ const pokemonAdatainakBekerese = function () {
         output: process.stdout
     });
 
-    readline.question('Mi a pokemon neve?', name => {
+    readline.question('\nMi a pokemon neve?', name => {
         readline.question('Mi a pokemon tipusa?', type => {
             readline.question('Mi a pokemon szintje?', level => {
                 // console.log(name,type,level)
+                if (isNaN(Number(level))) {
+                    console.log('Szintnek szamot kell megadni.')
+                    readline.close();
+                    pokemonAdatainakBekerese();
+                    return;
+                };
                 pokemonAdatainakMentese(name, type, level);
                 readline.close();
             });
@@ -49,14 +55,55 @@ const pokemonAdatainakMentese = function (name, type, level) {
     fs.appendFileSync('pokemonok.csv', `\n${ujSzerzemeny}`);
 
     const rawFile = fs.readFileSync('pokemonok.csv').toString();
-    const lines = rawFile.split(`\n`).splice(0, 1);
+    const lines = rawFile.split(`\n`).slice(1);
     const sajatPokemonokListaja = [];
     const pokemonokSzama = lines.length;
     const legerosebbPokemonjaim = [];
+    const pokemonjaimSzintSzerintiSorrendben = [];
     for (let i = 0; i < lines.length; i++) {
-        sajatPokemonokListaja.push(lines[i].split(';')[0]);
-        console.log(lines[i]);
+        // console.log(lines[i]);
+        const name = lines[i].split(';')[0];
+        const type = lines[i].split(';')[1];
+        const level = Number(lines[i].split(';')[2]);
+        sajatPokemonokListaja.push(name);
+
+        if (legerosebbPokemonjaim.length == 0) {
+            legerosebbPokemonjaim.push({
+                nev: name,
+                szint: level
+            });
+        } else if (legerosebbPokemonjaim[0].szint <= level) {
+            if (legerosebbPokemonjaim[0].szint < level) {
+                legerosebbPokemonjaim.length = 0;
+            };
+            legerosebbPokemonjaim.push({
+                nev: name,
+                szint: level
+            });
+        };
+
+        pokemonjaimSzintSzerintiSorrendben.push({
+            nev: name,
+            tipus: type,
+            szint: level
+        });
     };
+
+    for (let i = 0; i < pokemonjaimSzintSzerintiSorrendben.length-1; i++) {
+        for (let j = i+1; j < pokemonjaimSzintSzerintiSorrendben.length; j++) {
+            if (pokemonjaimSzintSzerintiSorrendben[j].szint > pokemonjaimSzintSzerintiSorrendben[i].szint) {
+                const seged = pokemonjaimSzintSzerintiSorrendben[i];
+                pokemonjaimSzintSzerintiSorrendben[i] = pokemonjaimSzintSzerintiSorrendben[j];
+                pokemonjaimSzintSzerintiSorrendben[j] = seged;
+            };
+        };
+    };
+
+    console.log(ujSzerzemeny);
+    console.log(sajatPokemonokListaja);
+    console.log(pokemonokSzama);
+    console.log(legerosebbPokemonjaim);
+    console.log(pokemonjaimSzintSzerintiSorrendben);
 };
 
 pokemonAdatainakBekerese();
