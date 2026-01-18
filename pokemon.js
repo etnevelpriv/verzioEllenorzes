@@ -89,8 +89,8 @@ const pokemonAdatainakMentese = function (name, type, level) {
         });
     };
 
-    for (let i = 0; i < pokemonjaimSzintSzerintiSorrendben.length-1; i++) {
-        for (let j = i+1; j < pokemonjaimSzintSzerintiSorrendben.length; j++) {
+    for (let i = 0; i < pokemonjaimSzintSzerintiSorrendben.length - 1; i++) {
+        for (let j = i + 1; j < pokemonjaimSzintSzerintiSorrendben.length; j++) {
             if (pokemonjaimSzintSzerintiSorrendben[j].szint > pokemonjaimSzintSzerintiSorrendben[i].szint) {
                 const seged = pokemonjaimSzintSzerintiSorrendben[i];
                 pokemonjaimSzintSzerintiSorrendben[i] = pokemonjaimSzintSzerintiSorrendben[j];
@@ -99,11 +99,21 @@ const pokemonAdatainakMentese = function (name, type, level) {
         };
     };
 
-    console.log(ujSzerzemeny);
-    console.log(sajatPokemonokListaja);
-    console.log(pokemonokSzama);
-    console.log(legerosebbPokemonjaim);
-    console.log(pokemonjaimSzintSzerintiSorrendben);
+    // console.log(ujSzerzemeny);
+    // console.log(sajatPokemonokListaja);
+    // console.log(pokemonokSzama);
+    // console.log(legerosebbPokemonjaim);
+    // console.log(pokemonjaimSzintSzerintiSorrendben);
+
+    const menuObj = {
+        'Uj szerzemeny': ujSzerzemeny,
+        'Sajat pokemonok listaja': sajatPokemonokListaja,
+        'Pokemonok szama': pokemonokSzama,
+        'Legerosebb pokemonjaim': legerosebbPokemonjaim,
+        'Pokemonjaim szint szerinti sorrendben': pokemonjaimSzintSzerintiSorrendben,
+    };
+
+    console.dir(menuObj);
 };
 
 pokemonAdatainakBekerese();
