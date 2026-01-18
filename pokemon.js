@@ -46,6 +46,12 @@ const pokemonAdatainakBekerese = function () {
 const pokemonAdatainakMentese = function (name, type, level) {
     const fs = require("node:fs");
     fs.appendFileSync('pokemonok.csv', `\n${name};${type};${level}`);
+
+    const rawFile = fs.readFileSync('pokemonok.csv').toString();
+    const lines = rawFile.split(`\n`);
+    for(let i = 1; i < lines.length; i++) {
+        console.log(lines[i]);
+    };
 };
 
 pokemonAdatainakBekerese();
