@@ -44,12 +44,17 @@ const pokemonAdatainakBekerese = function () {
 };
 
 const pokemonAdatainakMentese = function (name, type, level) {
+    const ujSzerzemeny = `${name};${type};${level}`
     const fs = require("node:fs");
-    fs.appendFileSync('pokemonok.csv', `\n${name};${type};${level}`);
+    fs.appendFileSync('pokemonok.csv', `\n${ujSzerzemeny}`);
 
     const rawFile = fs.readFileSync('pokemonok.csv').toString();
-    const lines = rawFile.split(`\n`);
-    for(let i = 1; i < lines.length; i++) {
+    const lines = rawFile.split(`\n`).splice(0, 1);
+    const sajatPokemonokListaja = [];
+    const pokemonokSzama = lines.length;
+    const legerosebbPokemonjaim = [];
+    for (let i = 0; i < lines.length; i++) {
+        sajatPokemonokListaja.push(lines[i].split(';')[0]);
         console.log(lines[i]);
     };
 };
